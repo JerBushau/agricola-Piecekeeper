@@ -205,16 +205,12 @@ class View {
 // helpers
 function rainbow(el, time) {
   let colors = [
-    '#f84a19',
-    '#df4216',
-    '#c63b14',
     '#ad3311',
     '#942c0f',
     '#7c250c',
     '#631d0a',
     '#f84a19',
-    '#f85c2f',
-    '#f96e46'
+    '#f85c2f'
   ];
   let i = 0;
 
