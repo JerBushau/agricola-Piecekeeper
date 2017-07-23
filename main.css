@@ -44,17 +44,6 @@ nav {
   max-width: 1000px;
 }
 
-nav button {
-  background-color: #fff;
-  border: none;
-  width: 100px;
-  height: 50px;
-  margin: 10px;
-  padding: 10px;
-  box-shadow: 0 5px 15px #444;
-  transition: all 0.7s;
-}
-
 .space-container {
   display: flex;
   justify-content: center;
@@ -76,20 +65,26 @@ nav button {
   box-shadow: 0 5px 15px #444;
 }
 
-.active {
-  background: #000;
-  color: white;
-  box-shadow: 0 1px 5px #444;
-}
-
+.accumulate-button,
 .add-space-button {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  width: 110px;
+  height: 50px;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0 5px 15px #444;
+  transition: all 0.4s;
 }
 
 .accumulate-button {
   position: relative;
   overflow: hidden;
-  transition: box-shadow 0.1s;
+  transition: all 0.1s;
 }
 
 .accumulate-button:active {
@@ -116,7 +111,7 @@ nav button {
   visibility: hidden;
 }
 
-.accumulate-button:focus:after {
+.accumulate-button:hover:after {
   visibility: visible;
 }
 
@@ -137,12 +132,16 @@ nav button {
   animation: ripple 0.7s;
 }
 
+.add-space-button {
+  position: relative;
+}
+
 .add-space-dropdown {
   display: flex;
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 105px;
+  left: 115px;
   width: auto;
 }
 
@@ -151,15 +150,22 @@ nav button {
   justify-content: center;
   align-items: center;
   padding: 0.7em;
-  width: 75px;
+  width: 90px;
   margin: 0.3em;
   background: black;
   color: white;
+  box-shadow: 0 1px 5px #444;
 }
 
 .gather-button {
   width: 100%;
   padding: 10px;
+}
+
+.active {
+  background: #000;
+  color: white;
+  box-shadow: 0 1px 5px #444;
 }
 
 .hidden {
@@ -237,11 +243,15 @@ nav button {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1090px) {
   .add-space-dropdown {
     flex-direction: column;
     top: 55px;
-  left: -5px;
+    left: -5px;
+  }
+
+  .add-space-dropdown a {
+    padding: 20px 0;
   }
 }
 
