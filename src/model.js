@@ -18,6 +18,7 @@ class Model {
       { name: 'Wild Boar', type: 'boar', defaultAmount: 1 },
       { name: 'Stone Quarry', type: 'stone', defaultAmount: 1 }
     ];
+    this.round = 1;
     this.id = 0;
     this.activeSpaces = [];
   }
@@ -27,8 +28,13 @@ class Model {
     this.defaultSpaces.forEach(space => {
       let newAccuSpace = new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount);
       this.activeSpaces.push(newAccuSpace);
-      this.id++
+      this.id++;
     });
+  }
+
+  advanceRound() {
+    this.round++;
+    console.log(this.round)
   }
 
   getSpaceById(id) {

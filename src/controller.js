@@ -17,13 +17,17 @@ class Controller {
   }
 
   accumulate() {
+    if (this.model.round >= 14) {
+      console.log('game over');
+      return this.model.round = 14;
+    }
     this.model.accumulate();
     this.view.renderSpaces(this.model.activeSpaces);
+    this.model.advanceRound();
   }
 
   gather(space) {
     space.gather()
     this.view.renderSpaces(this.model.activeSpaces);
-
   }
 }

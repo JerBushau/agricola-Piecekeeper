@@ -15,6 +15,7 @@ body,
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   background: linear-gradient(to bottom right, #fc4a1a, #f7b733);
 }
 
@@ -84,7 +85,7 @@ nav {
 .accumulate-button {
   position: relative;
   overflow: hidden;
-  transition: all 0.1s;
+  transition: box-shadow 0.1s ;
 }
 
 .accumulate-button:active {
@@ -101,9 +102,9 @@ nav {
   height: 120px;
   margin-left: -60px;
   margin-top: -60px;
-  background: #3f51b5;
+  background: #6441a5;
   border-radius: 100%;
-  opacity: .8;
+  opacity: 0.5;
   transform: scale(0);
 }
 
@@ -111,7 +112,7 @@ nav {
   visibility: hidden;
 }
 
-.accumulate-button:hover:after {
+.accumulate-button:focus:after {
   visibility: visible;
 }
 
@@ -143,6 +144,8 @@ nav {
   bottom: 0;
   left: 115px;
   width: auto;
+  margin-left: 0;
+  transition: all 0.4s;
 }
 
 .add-space-dropdown a {
@@ -152,9 +155,13 @@ nav {
   padding: 0.7em;
   width: 90px;
   margin: 0.3em;
-  background: black;
-  color: white;
+  background: #6441a5;
+  color: #fff;
   box-shadow: 0 1px 5px #444;
+}
+
+.add-space-dropdown a:active{
+  background: #2a0845;
 }
 
 .gather-button {
@@ -163,14 +170,19 @@ nav {
 }
 
 .active {
-  background: #000;
-  color: white;
+  background: #6441a5;
+  color: #fff;
   box-shadow: 0 1px 5px #444;
 }
 
 .hidden {
-  display: none;
+  opacity: 0;
+  margin-left: 1000px;
 }
+
+/*.hidden:not(:active) {
+  display: none;
+}*/
 
 .name {
   font-size: 1.7em;
