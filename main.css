@@ -16,7 +16,8 @@ body,
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(to bottom right, #fc4a1a, #f7b733);
+  background: linear-gradient(to bottom right, #fe8c00 45%, #f83600);
+  font-family: 'Lato', sans-serif;
 }
 
 header {
@@ -24,23 +25,24 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Lobster', cursive;
+  font-family: 'Lobster Two', cursive;
 }
 
-header h1 {
+header h3 {
   margin: 0;
   font-weight: normal;
-  font-size: 72px;
-  background: linear-gradient(to top right, #6441a5, #2a0845);
+  font-size: 3.5em;
+  background: linear-gradient(to bottom, #6441a5, #2a0845 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 nav {
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
-  height: 75px;
+  min-height: 75px;
   width: 100%;
   max-width: 1000px;
 }
@@ -116,19 +118,6 @@ nav {
   visibility: visible;
 }
 
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-  }
-  20% {
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1);
-  }
-}
-
 .accumulate-button:not(:active):after {
   animation: ripple 0.7s;
 }
@@ -152,8 +141,9 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-decoration: none;
   padding: 0.7em;
-  width: 90px;
+  width: 95px;
   margin: 0.3em;
   background: #6441a5;
   color: #fff;
@@ -169,6 +159,32 @@ nav {
   padding: 10px;
 }
 
+.round-info-container {
+  position: absolute;
+  padding: 10px;
+  left: 10px;
+  bottom: 0;
+  margin: 10px;
+  background: #6441a5;
+  color: #fff;
+  box-shadow: 0 5px 15px #444;
+  transition: all 0.4s;
+}
+
+.round-info {
+  display: flex;
+}
+
+.round-info-container h1 {
+  margin:  0 10px;
+  text-align: center;
+  font-weight: normal;
+  color: #fff;
+ /* background: linear-gradient(to bottom, #6441a5, #2a0845);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;*/
+}
+
 .active {
   background: #6441a5;
   color: #fff;
@@ -180,11 +196,8 @@ nav {
   margin-left: 1000px;
 }
 
-/*.hidden:not(:active) {
-  display: none;
-}*/
-
 .name {
+  margin: 0 0 10px;
   font-size: 1.7em;
   font-weight: bold;
 }
@@ -195,6 +208,10 @@ nav {
   font-weight: bold;
 }
 
+.type h3 {
+  margin-top: 0;
+}
+
 .wood,
 .clay,
 .reed,
@@ -203,9 +220,9 @@ nav {
 .stone,
 .boar,
 .cow {
-  background-size: 40%;
+  background-size: 35%;
   background-repeat: no-repeat;
-  background-position: 5% 70%;
+  background-position: 5% 65%;
 }
 
 .wood {
@@ -239,6 +256,29 @@ nav {
 .stone {
   background-image: url('https://vignette4.wikia.nocookie.net/play-rust/images/8/85/Stones_icon.png/revision/latest?cb=20150405123145');
 }
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+  }
+  20% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%{
+    transform: scale(1.1, 1.3);
+  }
+  100%{
+    transform: scale(1, 1);
+  }
+}
+
 
 @media (max-width: 600px) {
   .space {

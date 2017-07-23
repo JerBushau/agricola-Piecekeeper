@@ -18,7 +18,12 @@ class Model {
       { name: 'Wild Boar', type: 'boar', defaultAmount: 1 },
       { name: 'Stone Quarry', type: 'stone', defaultAmount: 1 }
     ];
-    this.round = 1;
+    this.roundInfo = {
+      harvestRounds: [4, 7, 9, 11, 13,14],
+      currentRound: 1,
+      currentStage: 1,
+      message: ''
+    };
     this.id = 0;
     this.activeSpaces = [];
   }
@@ -33,8 +38,33 @@ class Model {
   }
 
   advanceRound() {
-    this.round++;
-    console.log(this.round)
+    this.roundInfo.currentRound++;
+    this.roundInfo.harvestRounds.some(round => {
+      if (round === Number(this.roundInfo.currentRound)) {
+        if (round === 14) {
+          return this.roundInfo.message = 'Last Harvest!';
+        }
+        return this.roundInfo.message = 'Harvest this round!';
+      } else {
+        this.roundInfo.message = '';
+      }
+    });
+
+    if (this.roundInfo.currentRound === 14) {
+      this.roundInfo.currentStage = 6;
+    } else if (this.roundInfo.currentRound > 11) {
+      this.roundInfo.currentStage = 5;
+    } else if (this.roundInfo.currentRound > 9) {
+      this.roundInfo.currentStage = 4;
+    } else if (this.roundInfo.currentRound > 7) {
+      this.roundInfo.currentStage = 3;
+    } else if (this.roundInfo.currentRound > 4) {
+      this.roundInfo.currentStage = 2;
+    }
+  }
+
+  getRoundInfo () {
+    return this.roundInfo
   }
 
   getSpaceById(id) {

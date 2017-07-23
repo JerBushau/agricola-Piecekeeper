@@ -9,6 +9,7 @@ class Controller {
   init() {
     this.model.init();
     this.view.renderSpaces(this.model.activeSpaces);
+    this.view.renderInfo(this.model.getRoundInfo());
   }
 
   addRandomOrderSpace(type) {
@@ -17,13 +18,14 @@ class Controller {
   }
 
   accumulate() {
-    if (this.model.round >= 14) {
+    if (this.model.roundInfo.currentRound >= 14) {
       console.log('game over');
-      return this.model.round = 14;
+      return this.model.roundInfo.currentRound = 14;
     }
     this.model.accumulate();
     this.view.renderSpaces(this.model.activeSpaces);
     this.model.advanceRound();
+    this.view.renderInfo(this.model.getRoundInfo());
   }
 
   gather(space) {

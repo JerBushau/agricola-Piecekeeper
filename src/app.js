@@ -7,7 +7,7 @@ const accumulateButton = document.querySelector('.accumulate-button');
 class App {
   constructor() {
     this.model = new Model;
-    this.template = new SpaceTemplate();
+    this.template = new Template();
     this.view = new View(this.template);
     this.controller = new Controller(this.model, this.view)
   }
@@ -26,7 +26,6 @@ class App {
     });
 
     addSpaceDropdown.addEventListener('click', e => {
-      console.log(e.target.dataset.type)
       a.controller.addRandomOrderSpace(e.target.dataset.type);
     });
   }
