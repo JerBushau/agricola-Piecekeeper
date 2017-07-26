@@ -16,7 +16,7 @@ body,
   /*justify-content: center;*/
   align-items: center;
   overflow: hidden;
-  background: url('imgs/farm.png') no-repeat bottom/100%,
+  background: url('imgs/farm.svg') no-repeat bottom/100%,
   linear-gradient(to bottom right, #fe8c00 45%, #f83600);
   font-family: 'Lato', sans-serif;
 }
@@ -194,7 +194,7 @@ nav {
 .round-info-container {
   position: absolute;
   padding: 10px;
-  left: 10px;
+  left: 12px;
   bottom: 0;
   margin: 10px;
   background: #6441a5;
