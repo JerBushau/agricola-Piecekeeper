@@ -23,6 +23,15 @@ class App {
 
     addSpaceButton.addEventListener('click', e => {
       e.preventDefault();
+      document.querySelectorAll('.delete-button').forEach(button => {
+        button.classList.add('hidden');
+      });
+      document.querySelectorAll('.prev-value').forEach(item => {
+        item.classList.add('hidden');
+      });
+      a.model.roundInfo.activeSpaces.forEach(space => {
+        space.menuOpen = false;
+      });
       addSpaceDropdown.classList.toggle('hidden');
       addSpaceButton.classList.toggle('active');
     });

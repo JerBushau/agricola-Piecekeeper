@@ -47,4 +47,9 @@ class Controller {
     space.back();
     this.view.renderSpaces(this.model.roundInfo.activeSpaces);
   }
+
+  deleteSpace(id) {
+    this.model.deleteSpace(id);
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
+  }
 }

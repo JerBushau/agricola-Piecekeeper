@@ -8,6 +8,7 @@ body,
   margin: 0;
   min-height: 100vh;
   width: 100%;
+  background: #444;
 }
 
 .wrapper {
@@ -16,9 +17,10 @@ body,
   /*justify-content: center;*/
   align-items: center;
   overflow: hidden;
-  background: url('imgs/farm.svg') no-repeat bottom/100%,
+  background: url('imgs/farm.svg') no-repeat bottom/101%,
   linear-gradient(to bottom right, #fe8c00 45%, #f83600);
   font-family: 'Lato', sans-serif;
+  animation: fade 1.4s;
 }
 
 header {
@@ -29,19 +31,21 @@ header {
   font-family: 'Lobster Two', cursive;
 }
 
-header h3 {
+.site-title {
   margin: 0;
   font-weight: normal;
   font-size: 3.2em;
   background: linear-gradient(to bottom, #6441a5, #2a0845 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: fade-in-from-bottom 1s;
 }
 
 .logo {
   max-width: 488px;
   max-height: 107px;
   padding: 5px;
+  animation: fade-in-from-bottom 1s;
 }
 
 img {
@@ -58,6 +62,7 @@ nav {
   min-height: 75px;
   width: 100%;
   max-width: 1248px;
+  animation: fade-in-from-bottom 1s;
 }
 
 .space-container {
@@ -67,6 +72,7 @@ nav {
   width : 100%;
   max-width : 1248px;
   margin-bottom: 100px;
+  animation: fade-in-from-bottom 1s;
 }
 
 .space {
@@ -78,9 +84,10 @@ nav {
   align-items: center;
   margin: 10px;
   width: 225px;
-  padding: 10px;
+  padding: 10px 10px 15px;
   box-shadow: 0 5px 15px rgba(68, 68, 68, 0.6);
-  min-height: auto;
+  min-height: 166px;
+  transition: all 0.1s;
   /*dont select text on click*/
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -88,6 +95,10 @@ nav {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.space:active {
+  box-shadow: 0 1px 5px rgba(68, 68, 68, 0.6);
 }
 
 .accumulate-button,
@@ -189,6 +200,7 @@ nav {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
+  display: none;
 }
 
 .round-info-container {
@@ -218,15 +230,25 @@ nav {
   -webkit-text-fill-color: transparent;*/
 }
 
-.prev-value {
+.prev-value,
+.delete-button {
   position: absolute;
   background: rgba(53, 255, 7, 0.8);
   padding: 3px 7px;
-  border-radius: 100%;
+  /*border-radius: 100%;*/
   top: 5px;
-  right: 5px;
+  left: 5px;
   margin-left: 0;
   transition: all 0.3s;
+}
+
+.delete-button {
+  background: rgba(249, 0, 0, 0.8);
+  padding: 3px 6px;
+  font-weight: bold;
+  left: 88%;
+  right: 5px;
+  border: none;
 }
 
 .active {
@@ -237,8 +259,8 @@ nav {
 
 .hidden {
   opacity: 0;
-  margin-left: 1000px;
-  z-index: 1000;
+  margin-left: 75px;
+  visibility: hidden;
 }
 
 .name {
@@ -246,6 +268,7 @@ nav {
   font-size: 1.7em;
   font-weight: bold;
   margin: 0;
+  text-align: center;
 }
 
 .number {
@@ -267,7 +290,7 @@ nav {
 .boar,
 .cow {
   background-size: 30%;
-  background-position: 5% 48%;
+  background-position: 5% 85%;
   background-repeat: no-repeat;
 }
 
@@ -280,27 +303,39 @@ nav {
 }
 
 .reed {
-  background-image: url('http://images.clipartpanda.com/reed-clipart-marsh-reed-clipart-1.jpg');
+  background-image: url('imgs/reed.png');
+  background-size: 25%;
 }
 
 .food {
-  background-image: url('https://www.shareicon.net/download/2016/10/07/840475_food_512x512.png');
+  background-image: url('imgs/food.png');
 }
 
 .sheep {
-  background-image: url('http://quantum-sheep.com/wp-content/themes/black-letterhead/images/icon-quantumsheep.png');
+  background-image: url('imgs/sheep.png');
 }
 
 .boar {
-  background-image: url('https://www.emojibase.com/resources/img/emojis/hangouts/1f417.png');
+  background-image: url('imgs/pig.png');
 }
 
 .cow {
-  background-image: url('http://www.iconarchive.com/download/i24275/martin-berube/animal/cow.ico');
+  background-image: url('imgs/cow.ico');
 }
 
 .stone {
-  background-image: url('https://vignette4.wikia.nocookie.net/play-rust/images/8/85/Stones_icon.png/revision/latest?cb=20150405123145');
+  background-image: url('imgs/stone.png');
+}
+
+@keyframes fade-in-from-bottom {
+  0% {
+    opacity: 0;
+    margin-top: 15px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0;
+  }
 }
 
 @keyframes ripple {
@@ -316,55 +351,21 @@ nav {
   }
 }
 
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes pulse {
   0%{
     transform: scale(1.1, 1.3);
   }
   100%{
     transform: scale(1, 1);
-  }
-}
-
-
-@media (max-width: 800px) {
-  .space {
-    width: 150px;
-    min-height: auto;
-    justify-content: space-between;
-  }
-
-  .number {
-    font-size: 1.5em;
-    margin: 0;
-  }
-
-  header {
-    flex-direction: column;
-  }
-
-  .round-info-container {
-    position: static;
-    width: 100%;
-  }
-
-  .wood,
-  .clay,
-  .reed,
-  .food,
-  .sheep,
-  .stone,
-  .boar,
-  .cow {
-    background-size: 25%;
-    background-position: 5% 50%;
-  }
-
-  .gather-button {
-    margin-top: 0;
-  }
-
-  header h3 {
-    font-size: 2.7em;
   }
 }
 
@@ -393,3 +394,87 @@ nav {
   }
 }
 
+@media (max-width: 800px) {
+  .space {
+    width: 150px;
+    min-height: auto;
+    justify-content: space-between;
+  }
+
+  .name {
+    font-size: 1.3em;
+  }
+
+  .number {
+    font-size: 1.7em;
+    margin: 0;
+  }
+
+  .type {
+    font-size: 1em
+  }
+
+  header {
+    flex-direction: column;
+  }
+
+  .site-title {
+    font-size: 0.7em;
+  }
+
+  .round-info-container {
+    position: static;
+    width: 100%;
+  }
+
+  .wood,
+  .clay,
+  .reed,
+  .food,
+  .sheep,
+  .stone,
+  .boar,
+  .cow {
+    background-size: 25%;
+  }
+
+  .gather-button {
+    margin-top: 0;
+  }
+
+  .delete-button {
+    left: 83%;
+  }
+
+  .site-title {
+    font-size: 2.7em;
+  }
+}
+
+@media (max-width: 600px) {
+  .space {
+    width: 90px;
+    margin: 3px;
+  }
+
+  .gather-button {
+    padding: 3px;
+    display: none;
+  }
+
+  .delete-button {
+    left: 71%;
+  }
+
+  .name {
+    font-size: 1em;
+  }
+
+  .number {
+    font-size: 1.1em;
+  }
+
+  .type {
+    font-size: 0.65em
+  }
+}

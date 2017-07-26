@@ -54,7 +54,10 @@ class Model {
       this.roundInfo.currentStage = 3;
     } else if (this.roundInfo.currentRound > 4) {
       this.roundInfo.currentStage = 2;
+    } else {
+      this.roundInfo.currentStage = 1;
     }
+
     this.roundInfo.harvestRounds.some(round => {
       if (round === Number(this.roundInfo.currentRound)) {
         if (round === 14) {
@@ -113,5 +116,12 @@ class Model {
     this.roundInfo.activeSpaces.forEach(space => {
       space.back();
     });
+  }
+
+  deleteSpace(id) {
+    let space = this.getSpaceById(id);
+    let i = this.roundInfo.activeSpaces.indexOf(space);
+
+    this.roundInfo.activeSpaces.splice(i, 1);
   }
 }

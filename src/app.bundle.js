@@ -13,6 +13,7 @@ class AcummulatorSpace {
     this.defaultAmount = amount;
     this.accumulatedAmount = this.defaultAmount;
     this.previousValue = 0;
+    this.menuOpen = false;
   }
 
   gather() {
@@ -32,13 +33,17 @@ class AcummulatorSpace {
     }
   }
 
-  // probably pointless use accumulate...
-  forward() {
-    this.previousValue = this.accumulatedAmount;
-    if (this.accumulatedAmount >= this.defaultAmount) {
-      this.accumulatedAmount += this.defaultAmount;
-    }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
+
+  // // pointless use accumulate...
+  // forward() {
+  //   this.previousValue = this.accumulatedAmount;
+  //   if (this.accumulatedAmount >= this.defaultAmount) {
+  //     this.accumulatedAmount += this.defaultAmount;
+  //   }
+  // }
 }
 
 'use strict'
@@ -97,7 +102,10 @@ class Model {
       this.roundInfo.currentStage = 3;
     } else if (this.roundInfo.currentRound > 4) {
       this.roundInfo.currentStage = 2;
+    } else {
+      this.roundInfo.currentStage = 1;
     }
+
     this.roundInfo.harvestRounds.some(round => {
       if (round === Number(this.roundInfo.currentRound)) {
         if (round === 14) {
@@ -157,12 +165,45 @@ class Model {
       space.back();
     });
   }
+
+  deleteSpace(id) {
+    let space = this.getSpaceById(id);
+    let i = this.roundInfo.activeSpaces.indexOf(space);
+
+    this.roundInfo.activeSpaces.splice(i, 1);
+  }
 }
 'use strict'
 
 class Template {
   constructor() {
     this.spaceTemplate = function(space) {
+      if (space.id > 7 && space.menuOpen) return `
+<div id="${space.id}" class="space ${space.type}">
+  <small class="prev-value">${space.previousValue}</small>
+  <button class="delete-button">X</button>
+  <h1 class="name">${space.name}</h1>
+  <h1 class="number">${space.accumulatedAmount}</h1>
+  <h3 class="type">${space.type}</h3>
+  <button class="gather-button">gather</button>
+</div>`
+      if (space.id > 7) return `
+<div id="${space.id}" class="space ${space.type}">
+  <small class="prev-value hidden">${space.previousValue}</small>
+  <button class="delete-button hidden">X</button>
+  <h1 class="name">${space.name}</h1>
+  <h1 class="number">${space.accumulatedAmount}</h1>
+  <h3 class="type">${space.type}</h3>
+  <button class="gather-button">gather</button>
+</div>`
+      if (space.menuOpen) return `
+<div id="${space.id}" class="space ${space.type}">
+  <small class="prev-value">${space.previousValue}</small>
+  <h1 class="name">${space.name}</h1>
+  <h1 class="number">${space.accumulatedAmount}</h1>
+  <h3 class="type">${space.type}</h3>
+  <button class="gather-button">gather</button>
+</div>`
       return `
 <div id="${space.id}" class="space ${space.type}">
   <small class="prev-value hidden">${space.previousValue}</small>
@@ -192,6 +233,8 @@ class View {
     this.roundInfoTemplate = template.roundInfoTemplate;
   }
 
+  // create way to render specific changes rather than reprinting entire screen each time.
+
   renderSpaces(spaces) {
     this.spaceContainer.innerHTML = '';
     spaces.forEach(space => {
@@ -209,9 +252,9 @@ class View {
         addRule('.accumulate-button:after', {
           display: 'none'
         });
-        rainbow(this.roundInfoContainer, 175);
-        return this.roundInfoContainer.style.transform = 'scale(1.2, 1.2)';
+        return endGameAlert(info, this.roundInfoContainer, 175);
       }
+      document.querySelector('.accumulate-button').classList.remove('active');
       this.roundInfoContainer.style.animation = 'pulse 0.4s';
       return this.roundInfoContainer.style.background = '#f84a19';
     }
@@ -219,30 +262,65 @@ class View {
     this.roundInfoContainer.style.animation = 'none';
   }
 
-  // fix this bind functions...
+  // fix this bind functions... use events
+  // dispatch event that controller can listen for so don't
+  // have to ref a (the app instance) here in view
   bindButtons() {
     document.querySelectorAll('.gather-button').forEach(button => {
       button.addEventListener('click', e => {
         let target = e.target.parentElement;
         let space = a.model.getSpaceById(Number(target.id));
-        // this is bad bind buttons better; perhaps try events
+
         a.controller.gather(space);
+      });
+    });
+
+    document.querySelectorAll('.delete-button').forEach(button => {
+      button.addEventListener('click', e => {
+        let target = e.target.parentElement;
+
+        a.controller.deleteSpace(Number(target.id));
       });
     });
 
     document.querySelectorAll('.space').forEach( space => {
       space.addEventListener('dblclick', e => {
         if (e.target.tagName !== 'DIV') return
+
         if (e.ctrlKey) {
-          return document.querySelectorAll('.prev-value').forEach(item => {
+          // show space 'menu'
+          document.querySelectorAll('.delete-button').forEach(button => {
+            button.classList.toggle('hidden');
+          });
+          document.querySelectorAll('.prev-value').forEach(item => {
             item.classList.toggle('hidden');
           });
+          return a.model.roundInfo.activeSpaces.forEach(space => {
+            space.toggleMenu();
+          });
+
         } else if (e.shiftKey) {
           let selectedSpace = a.model.getSpaceById(Number(e.target.id));
-          return a.controller.back(selectedSpace);
+          a.controller.accumulate(selectedSpace);
         }
-        let selectedSpace = a.model.getSpaceById(Number(e.target.id));
-        a.controller.accumulate(selectedSpace);
+
+
+      });
+    });
+
+    document.querySelectorAll('.space').forEach( space => {
+      space.addEventListener('click', e => {
+        let id;
+        let selectedSpace;
+        if (e.ctrlKey || e.shiftKey || e.target.tagName === 'BUTTON') return
+        if (e.target.tagName !== 'DIV') {
+          id = Number(e.target.parentElement.id);
+          selectedSpace = a.model.getSpaceById(id);
+          return a.controller.gather(selectedSpace);
+        }
+        id = Number(e.target.id);
+        selectedSpace = a.model.getSpaceById(id)
+        a.controller.gather(selectedSpace);
       });
     });
   }
@@ -250,23 +328,22 @@ class View {
 
 
 // helpers
-function rainbow(el, time) {
-  let colors = [
-    '#ad3311',
-    '#942c0f',
-    '#7c250c',
-    '#631d0a',
-    '#f84a19',
-    '#f85c2f'
-  ];
+// this could be dont in css but i was feelin' it, so i wrote this out
+function endGameAlert(info, el, time) {
+  let ric = document.querySelector('.round-info-container');
+  let colors = ['#ad3311', '#942c0f', '#7c250c', '#631d0a', '#f84a19', '#f85c2f'];
   let i = 0;
-
-  setInterval(_=> {
+  let loop = setInterval(_ => {
+    if (info.currentRound !== 14) {
+     clearInterval(loop);
+      return ric.style.transform = 'scale(1, 1)';
+    }
     el.style.background = colors[i];
     i++
     if (i > colors.length) {
       i = 0;
     }
+    ric.style.transform = 'scale(1.2, 1.2)';
   }, time);
 }
 
@@ -329,6 +406,11 @@ class Controller {
     space.back();
     this.view.renderSpaces(this.model.roundInfo.activeSpaces);
   }
+
+  deleteSpace(id) {
+    this.model.deleteSpace(id);
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
+  }
 }
 'use strict'
 
@@ -355,6 +437,15 @@ class App {
 
     addSpaceButton.addEventListener('click', e => {
       e.preventDefault();
+      document.querySelectorAll('.delete-button').forEach(button => {
+        button.classList.add('hidden');
+      });
+      document.querySelectorAll('.prev-value').forEach(item => {
+        item.classList.add('hidden');
+      });
+      a.model.roundInfo.activeSpaces.forEach(space => {
+        space.menuOpen = false;
+      });
       addSpaceDropdown.classList.toggle('hidden');
       addSpaceButton.classList.toggle('active');
     });
