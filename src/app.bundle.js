@@ -12,14 +12,32 @@ class AcummulatorSpace {
     this.type = type;
     this.defaultAmount = amount;
     this.accumulatedAmount = this.defaultAmount;
+    this.previousValue = 0;
   }
 
   gather() {
+    this.previousValue = this.accumulatedAmount;
     this.accumulatedAmount = 0;
   }
 
   accumulate() {
+    this.previousValue = this.accumulatedAmount;
     this.accumulatedAmount += this.defaultAmount;
+  }
+
+  back() {
+    this.previousValue = this.accumulatedAmount;
+    if (this.accumulatedAmount >= this.defaultAmount) {
+      this.accumulatedAmount -= this.defaultAmount;
+    }
+  }
+
+  // probably pointless use accumulate...
+  forward() {
+    this.previousValue = this.accumulatedAmount;
+    if (this.accumulatedAmount >= this.defaultAmount) {
+      this.accumulatedAmount += this.defaultAmount;
+    }
   }
 }
 
@@ -31,8 +49,8 @@ class Model {
       { name: 'Copse', type: 'wood', defaultAmount: 1 },
       { name: 'Grove', type: 'wood', defaultAmount: 2 },
       { name: 'Forest', type: 'wood', defaultAmount: 3 },
-      { name: 'Hollow', type: 'clay', defaultAmount: 1 },
-      { name: 'Clay Pit', type: 'clay', defaultAmount: 2 },
+      { name: 'Clay Pit', type: 'clay', defaultAmount: 1 },
+      { name: 'Hollow', type: 'clay', defaultAmount: 2 },
       { name: 'Reed Bank', type: 'reed', defaultAmount: 1 },
       { name: 'Fishing', type: 'food', defaultAmount: 1 },
       { name: 'Traveling Players', type: 'food', defaultAmount: 1 }
@@ -40,41 +58,35 @@ class Model {
     this.randomOrderSpaces = [
       { name: 'Sheep', type: 'sheep', defaultAmount: 1 },
       { name: 'Cattle', type: 'cow', defaultAmount: 1 },
-      { name: 'Wild Boar', type: 'boar', defaultAmount: 1 },
+      { name: 'Pig', type: 'boar', defaultAmount: 1 },
       { name: 'Stone Quarry', type: 'stone', defaultAmount: 1 }
     ];
     this.roundInfo = {
       harvestRounds: [4, 7, 9, 11, 13,14],
       currentRound: 1,
       currentStage: 1,
+      activeSpaces: [],
       message: ''
     };
     this.id = 0;
-    this.activeSpaces = [];
   }
 
   init() {
     // make all default spaces active on load
     this.defaultSpaces.forEach(space => {
       let newAccuSpace = new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount);
-      this.activeSpaces.push(newAccuSpace);
+      this.roundInfo.activeSpaces.push(newAccuSpace);
       this.id++;
     });
   }
 
   advanceRound() {
     this.roundInfo.currentRound++;
-    this.roundInfo.harvestRounds.some(round => {
-      if (round === Number(this.roundInfo.currentRound)) {
-        if (round === 14) {
-          return this.roundInfo.message = 'Last Harvest!';
-        }
-        return this.roundInfo.message = 'Harvest this round!';
-      } else {
-        this.roundInfo.message = '';
-      }
-    });
+    this.setRoundInfo(this.roundInfo.currentRound)
+  }
 
+  setRoundInfo(round) {
+    // there is a better way to do this i'm sure
     if (this.roundInfo.currentRound === 14) {
       this.roundInfo.currentStage = 6;
     } else if (this.roundInfo.currentRound > 11) {
@@ -86,6 +98,15 @@ class Model {
     } else if (this.roundInfo.currentRound > 4) {
       this.roundInfo.currentStage = 2;
     }
+    this.roundInfo.harvestRounds.some(round => {
+      if (round === Number(this.roundInfo.currentRound)) {
+        if (round === 14) {
+          return this.roundInfo.message = 'Last Harvest!';
+        }
+        return this.roundInfo.message = 'Harvest this round!';
+      }
+      this.roundInfo.message = '';
+    });
   }
 
   getRoundInfo () {
@@ -94,7 +115,7 @@ class Model {
 
   getSpaceById(id) {
     let disiredSpace;
-    this.activeSpaces.some(space => {
+    this.roundInfo.activeSpaces.some(space => {
       if (id === space.id) {
         disiredSpace = space;
       }
@@ -105,30 +126,38 @@ class Model {
   addRandomOrderSpace(type) {
     if (type === 'sheep') {
       let sheep = this.randomOrderSpaces[0];
-      this.activeSpaces.push(new AcummulatorSpace(this.id, sheep.name, sheep.type, sheep.defaultAmount));
-      this.id++
+      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, sheep.name, sheep.type, sheep.defaultAmount));
+
     } else if (type === 'cow') {
       let cow = this.randomOrderSpaces[1];
-      this.activeSpaces.push(new AcummulatorSpace(this.id, cow.name, cow.type, cow.defaultAmount));
-      this.id++
+      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, cow.name, cow.type, cow.defaultAmount));
+
     } else if (type === 'boar') {
       let boar = this.randomOrderSpaces[2];
-      this.activeSpaces.push(new AcummulatorSpace(this.id, boar.name, boar.type, boar.defaultAmount));
-      this.id++
+      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, boar.name, boar.type, boar.defaultAmount));
+
     } else if (type === 'stone') {
       let stone = this.randomOrderSpaces[3];
-      this.activeSpaces.push(new AcummulatorSpace(this.id, stone.name, stone.type, stone.defaultAmount));
-      this.id++
+      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, stone.name, stone.type, stone.defaultAmount));
     }
+    this.id++
   }
 
   accumulate() {
-    this.activeSpaces.forEach(space => {
+    this.roundInfo.activeSpaces.forEach(space => {
       space.accumulate();
     });
   }
-}
 
+  rollBack() {
+    if (this.roundInfo.currentRound === 0) return
+    this.roundInfo.currentRound--
+    this.setRoundInfo(this.roundInfo.currentRound)
+    this.roundInfo.activeSpaces.forEach(space => {
+      space.back();
+    });
+  }
+}
 'use strict'
 
 class Template {
@@ -136,6 +165,7 @@ class Template {
     this.spaceTemplate = function(space) {
       return `
 <div id="${space.id}" class="space ${space.type}">
+  <small class="prev-value hidden">${space.previousValue}</small>
   <h1 class="name">${space.name}</h1>
   <h1 class="number">${space.accumulatedAmount}</h1>
   <h3 class="type">${space.type}</h3>
@@ -189,6 +219,7 @@ class View {
     this.roundInfoContainer.style.animation = 'none';
   }
 
+  // fix this bind functions...
   bindButtons() {
     document.querySelectorAll('.gather-button').forEach(button => {
       button.addEventListener('click', e => {
@@ -196,6 +227,22 @@ class View {
         let space = a.model.getSpaceById(Number(target.id));
         // this is bad bind buttons better; perhaps try events
         a.controller.gather(space);
+      });
+    });
+
+    document.querySelectorAll('.space').forEach( space => {
+      space.addEventListener('dblclick', e => {
+        if (e.target.tagName !== 'DIV') return
+        if (e.ctrlKey) {
+          return document.querySelectorAll('.prev-value').forEach(item => {
+            item.classList.toggle('hidden');
+          });
+        } else if (e.shiftKey) {
+          let selectedSpace = a.model.getSpaceById(Number(e.target.id));
+          return a.controller.back(selectedSpace);
+        }
+        let selectedSpace = a.model.getSpaceById(Number(e.target.id));
+        a.controller.accumulate(selectedSpace);
       });
     });
   }
@@ -223,6 +270,7 @@ function rainbow(el, time) {
   }, time);
 }
 
+// from s.o. pretty neat allows you to style psuedo and such eles w/ js
 var addRule = (function (style) {
     var sheet = document.head.appendChild(style).sheet;
     return function (selector, css) {
@@ -242,29 +290,44 @@ class Controller {
 
   init() {
     this.model.init();
-    this.view.renderSpaces(this.model.activeSpaces);
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     this.view.renderInfo(this.model.getRoundInfo());
   }
 
   addRandomOrderSpace(type) {
     this.model.addRandomOrderSpace(type);
-    this.view.renderSpaces(this.model.activeSpaces);
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
   }
 
-  accumulate() {
+  accumulate(space) {
     if (this.model.roundInfo.currentRound >= 14) {
       console.log('game over');
       return this.model.roundInfo.currentRound = 14;
     }
+    if(space) {
+      space.accumulate();
+      return this.view.renderSpaces(this.model.roundInfo.activeSpaces);
+    }
     this.model.accumulate();
-    this.view.renderSpaces(this.model.activeSpaces);
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     this.model.advanceRound();
     this.view.renderInfo(this.model.getRoundInfo());
   }
 
+  rollBack() {
+    this.model.rollBack();
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
+    this.view.renderInfo(this.model.getRoundInfo());
+  }
+
   gather(space) {
-    space.gather()
-    this.view.renderSpaces(this.model.activeSpaces);
+    space.gather();
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
+  }
+
+  back(space) {
+    space.back();
+    this.view.renderSpaces(this.model.roundInfo.activeSpaces);
   }
 }
 'use strict'
@@ -285,6 +348,8 @@ class App {
     this.controller.init();
 
     accumulateButton.addEventListener('click', e => {
+      e.preventDefault();
+      if (e.shiftKey) return this.controller.rollBack();
       this.controller.accumulate();
     });
 

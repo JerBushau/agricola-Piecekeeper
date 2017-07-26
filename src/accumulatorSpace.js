@@ -12,14 +12,32 @@ class AcummulatorSpace {
     this.type = type;
     this.defaultAmount = amount;
     this.accumulatedAmount = this.defaultAmount;
+    this.previousValue = 0;
   }
 
   gather() {
+    this.previousValue = this.accumulatedAmount;
     this.accumulatedAmount = 0;
   }
 
   accumulate() {
+    this.previousValue = this.accumulatedAmount;
     this.accumulatedAmount += this.defaultAmount;
+  }
+
+  back() {
+    this.previousValue = this.accumulatedAmount;
+    if (this.accumulatedAmount >= this.defaultAmount) {
+      this.accumulatedAmount -= this.defaultAmount;
+    }
+  }
+
+  // pointless use accumulate...
+  forward() {
+    this.previousValue = this.accumulatedAmount;
+    if (this.accumulatedAmount >= this.defaultAmount) {
+      this.accumulatedAmount += this.defaultAmount;
+    }
   }
 }
 

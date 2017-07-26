@@ -5,6 +5,7 @@ class Template {
     this.spaceTemplate = function(space) {
       return `
 <div id="${space.id}" class="space ${space.type}">
+  <small class="prev-value hidden">${space.previousValue}</small>
   <h1 class="name">${space.name}</h1>
   <h1 class="number">${space.accumulatedAmount}</h1>
   <h3 class="type">${space.type}</h3>

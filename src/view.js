@@ -35,6 +35,7 @@ class View {
     this.roundInfoContainer.style.animation = 'none';
   }
 
+  // fix this bind functions...
   bindButtons() {
     document.querySelectorAll('.gather-button').forEach(button => {
       button.addEventListener('click', e => {
@@ -42,6 +43,22 @@ class View {
         let space = a.model.getSpaceById(Number(target.id));
         // this is bad bind buttons better; perhaps try events
         a.controller.gather(space);
+      });
+    });
+
+    document.querySelectorAll('.space').forEach( space => {
+      space.addEventListener('dblclick', e => {
+        if (e.target.tagName !== 'DIV') return
+        if (e.ctrlKey) {
+          return document.querySelectorAll('.prev-value').forEach(item => {
+            item.classList.toggle('hidden');
+          });
+        } else if (e.shiftKey) {
+          let selectedSpace = a.model.getSpaceById(Number(e.target.id));
+          return a.controller.back(selectedSpace);
+        }
+        let selectedSpace = a.model.getSpaceById(Number(e.target.id));
+        a.controller.accumulate(selectedSpace);
       });
     });
   }
@@ -69,6 +86,7 @@ function rainbow(el, time) {
   }, time);
 }
 
+// from s.o. pretty neat allows you to style psuedo and such eles w/ js
 var addRule = (function (style) {
     var sheet = document.head.appendChild(style).sheet;
     return function (selector, css) {

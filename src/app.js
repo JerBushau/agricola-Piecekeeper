@@ -16,6 +16,8 @@ class App {
     this.controller.init();
 
     accumulateButton.addEventListener('click', e => {
+      e.preventDefault();
+      if (e.shiftKey) return this.controller.rollBack();
       this.controller.accumulate();
     });
 
