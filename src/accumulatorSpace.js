@@ -17,17 +17,16 @@ class AcummulatorSpace {
   }
 
   gather() {
-    this.previousValue = this.accumulatedAmount;
     this.accumulatedAmount = 0;
   }
 
-  accumulate() {
-    this.previousValue = this.accumulatedAmount;
+  accumulate(asGroup) {
+    if (asGroup === true) this.previousValue = this.accumulatedAmount;
+
     this.accumulatedAmount += this.defaultAmount;
   }
 
   back() {
-    this.previousValue = this.accumulatedAmount;
     if (this.accumulatedAmount >= this.defaultAmount) {
       this.accumulatedAmount -= this.defaultAmount;
     }
@@ -36,13 +35,4 @@ class AcummulatorSpace {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
-
-  // // pointless use accumulate...
-  // forward() {
-  //   this.previousValue = this.accumulatedAmount;
-  //   if (this.accumulatedAmount >= this.defaultAmount) {
-  //     this.accumulatedAmount += this.defaultAmount;
-  //   }
-  // }
 }
-

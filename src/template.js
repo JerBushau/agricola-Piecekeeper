@@ -2,6 +2,8 @@
 
 class Template {
   constructor() {
+    // this feels ugly but works for now should consider doing
+    // the conditionals for spaceTemplate in a more dry way?
     this.spaceTemplate = function(space) {
       if (space.id > 7 && space.menuOpen) return `
 <div id="${space.id}" class="space ${space.type}">

@@ -17,17 +17,16 @@ class AcummulatorSpace {
   }
 
   gather() {
-    this.previousValue = this.accumulatedAmount;
     this.accumulatedAmount = 0;
   }
 
-  accumulate() {
-    this.previousValue = this.accumulatedAmount;
+  accumulate(asGroup) {
+    if (asGroup === true) this.previousValue = this.accumulatedAmount;
+
     this.accumulatedAmount += this.defaultAmount;
   }
 
   back() {
-    this.previousValue = this.accumulatedAmount;
     if (this.accumulatedAmount >= this.defaultAmount) {
       this.accumulatedAmount -= this.defaultAmount;
     }
@@ -36,16 +35,7 @@ class AcummulatorSpace {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
-
-  // // pointless use accumulate...
-  // forward() {
-  //   this.previousValue = this.accumulatedAmount;
-  //   if (this.accumulatedAmount >= this.defaultAmount) {
-  //     this.accumulatedAmount += this.defaultAmount;
-  //   }
-  // }
 }
-
 'use strict'
 
 class Model {
@@ -132,28 +122,24 @@ class Model {
   }
 
   addRandomOrderSpace(type) {
+    // explore other ways to do this
+    let space;
     if (type === 'sheep') {
-      let sheep = this.randomOrderSpaces[0];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, sheep.name, sheep.type, sheep.defaultAmount));
-
+      space = this.randomOrderSpaces[0];
     } else if (type === 'cow') {
-      let cow = this.randomOrderSpaces[1];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, cow.name, cow.type, cow.defaultAmount));
-
+      space = this.randomOrderSpaces[1];
     } else if (type === 'boar') {
-      let boar = this.randomOrderSpaces[2];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, boar.name, boar.type, boar.defaultAmount));
-
+      space = this.randomOrderSpaces[2];
     } else if (type === 'stone') {
-      let stone = this.randomOrderSpaces[3];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, stone.name, stone.type, stone.defaultAmount));
+      space = this.randomOrderSpaces[3];
     }
+    this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount));
     this.id++
   }
 
-  accumulate() {
+  accumulateAll() {
     this.roundInfo.activeSpaces.forEach(space => {
-      space.accumulate();
+      space.accumulate(true);
     });
   }
 
@@ -177,6 +163,8 @@ class Model {
 
 class Template {
   constructor() {
+    // this feels ugly but works for now should consider doing
+    // the conditionals for spaceTemplate in a more dry way?
     this.spaceTemplate = function(space) {
       if (space.id > 7 && space.menuOpen) return `
 <div id="${space.id}" class="space ${space.type}">
@@ -234,7 +222,6 @@ class View {
   }
 
   // create way to render specific changes rather than reprinting entire screen each time.
-
   renderSpaces(spaces) {
     this.spaceContainer.innerHTML = '';
     spaces.forEach(space => {
@@ -249,6 +236,7 @@ class View {
     if (info.message != '') {
       if (info.message === 'Last Harvest!') {
         document.querySelector('.accumulate-button').classList.add('active');
+        // altering active class would be more simple than this but it is interesting
         addRule('.accumulate-button:after', {
           display: 'none'
         });
@@ -258,23 +246,14 @@ class View {
       this.roundInfoContainer.style.animation = 'pulse 0.4s';
       return this.roundInfoContainer.style.background = '#f84a19';
     }
-    this.roundInfoContainer.style.background = '#6441a5';
     this.roundInfoContainer.style.animation = 'none';
+    this.roundInfoContainer.style.background = '#6441a5';
   }
 
-  // fix this bind functions... use events
-  // dispatch event that controller can listen for so don't
-  // have to ref a (the app instance) here in view
+  // fix this bind function... use events
+  // dispatch event that controller can listen for or something
+  // so don't have to ref a (the app instance) here in view
   bindButtons() {
-    document.querySelectorAll('.gather-button').forEach(button => {
-      button.addEventListener('click', e => {
-        let target = e.target.parentElement;
-        let space = a.model.getSpaceById(Number(target.id));
-
-        a.controller.gather(space);
-      });
-    });
-
     document.querySelectorAll('.delete-button').forEach(button => {
       button.addEventListener('click', e => {
         let target = e.target.parentElement;
@@ -282,10 +261,13 @@ class View {
         a.controller.deleteSpace(Number(target.id));
       });
     });
-
+    // show menu to fix mistakes
     document.querySelectorAll('.space').forEach( space => {
-      space.addEventListener('dblclick', e => {
-        if (e.target.tagName !== 'DIV') return
+      space.addEventListener('click', e => {
+        let targetId;
+
+        e.target.tagName !== 'DIV' ? targetId = Number(e.target.parentElement.id)
+          : targetId = Number(e.target.id);
 
         if (e.ctrlKey) {
           // show space 'menu'
@@ -300,14 +282,14 @@ class View {
           });
 
         } else if (e.shiftKey) {
-          let selectedSpace = a.model.getSpaceById(Number(e.target.id));
+          let selectedSpace = a.model.getSpaceById(targetId);
           a.controller.accumulate(selectedSpace);
         }
-
-
+        // do nothing on plain dblclick
+        return
       });
     });
-
+    // gather
     document.querySelectorAll('.space').forEach( space => {
       space.addEventListener('click', e => {
         let id;
@@ -319,7 +301,7 @@ class View {
           return a.controller.gather(selectedSpace);
         }
         id = Number(e.target.id);
-        selectedSpace = a.model.getSpaceById(id)
+        selectedSpace = a.model.getSpaceById(id);
         a.controller.gather(selectedSpace);
       });
     });
@@ -328,26 +310,24 @@ class View {
 
 
 // helpers
-// this could be dont in css but i was feelin' it, so i wrote this out
+// this could be done in css but i was feelin' it, so i wrote this thing
 function endGameAlert(info, el, time) {
   let ric = document.querySelector('.round-info-container');
   let colors = ['#ad3311', '#942c0f', '#7c250c', '#631d0a', '#f84a19', '#f85c2f'];
   let i = 0;
   let loop = setInterval(_ => {
     if (info.currentRound !== 14) {
-     clearInterval(loop);
+      clearInterval(loop);
       return ric.style.transform = 'scale(1, 1)';
     }
     el.style.background = colors[i];
     i++
-    if (i > colors.length) {
-      i = 0;
-    }
+    if (i > colors.length) i = 0;
     ric.style.transform = 'scale(1.2, 1.2)';
   }, time);
 }
 
-// from s.o. pretty neat allows you to style psuedo and such eles w/ js
+// from s.o. pretty neat allows you to style psuedo and such eles w/ js by adding a style tag
 var addRule = (function (style) {
     var sheet = document.head.appendChild(style).sheet;
     return function (selector, css) {
@@ -382,10 +362,10 @@ class Controller {
       return this.model.roundInfo.currentRound = 14;
     }
     if(space) {
-      space.accumulate();
+      space.accumulate(false);
       return this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     }
-    this.model.accumulate();
+    this.model.accumulateAll();
     this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     this.model.advanceRound();
     this.view.renderInfo(this.model.getRoundInfo());

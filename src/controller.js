@@ -23,10 +23,10 @@ class Controller {
       return this.model.roundInfo.currentRound = 14;
     }
     if(space) {
-      space.accumulate();
+      space.accumulate(false);
       return this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     }
-    this.model.accumulate();
+    this.model.accumulateAll();
     this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     this.model.advanceRound();
     this.view.renderInfo(this.model.getRoundInfo());

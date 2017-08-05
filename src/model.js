@@ -84,28 +84,24 @@ class Model {
   }
 
   addRandomOrderSpace(type) {
+    // explore other ways to do this
+    let space;
     if (type === 'sheep') {
-      let sheep = this.randomOrderSpaces[0];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, sheep.name, sheep.type, sheep.defaultAmount));
-
+      space = this.randomOrderSpaces[0];
     } else if (type === 'cow') {
-      let cow = this.randomOrderSpaces[1];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, cow.name, cow.type, cow.defaultAmount));
-
+      space = this.randomOrderSpaces[1];
     } else if (type === 'boar') {
-      let boar = this.randomOrderSpaces[2];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, boar.name, boar.type, boar.defaultAmount));
-
+      space = this.randomOrderSpaces[2];
     } else if (type === 'stone') {
-      let stone = this.randomOrderSpaces[3];
-      this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, stone.name, stone.type, stone.defaultAmount));
+      space = this.randomOrderSpaces[3];
     }
+    this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount));
     this.id++
   }
 
-  accumulate() {
+  accumulateAll() {
     this.roundInfo.activeSpaces.forEach(space => {
-      space.accumulate();
+      space.accumulate(true);
     });
   }
 
