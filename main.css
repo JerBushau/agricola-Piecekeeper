@@ -1,3 +1,7 @@
+/*
+GENERAL STYLE
+*/
+
 * {
   box-sizing: border-box;
 }
@@ -64,6 +68,10 @@ nav {
   animation: fade-in-from-bottom 1s;
 }
 
+/*
+SPACES & SPACE CONTAINERS
+*/
+
 .space-container {
   display: flex;
   justify-content: center;
@@ -94,6 +102,107 @@ nav {
 .space:active {
   box-shadow: 0 1px 5px rgba(68, 68, 68, 0.6);
 }
+
+.name {
+  margin: 0 0 10px;
+  font-size: 1.7em;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+}
+
+.number {
+  margin: 5px 0;
+  font-size: 2.2em;
+  font-weight: bold;
+}
+
+.type {
+  margin: 0;
+}
+
+/*
+SPACE BACKGROUNDS (based on type)
+*/
+
+.wood,
+.clay,
+.reed,
+.food,
+.sheep,
+.stone,
+.boar,
+.cow {
+  background-size: 30%;
+  background-position: 5% 85%;
+  background-repeat: no-repeat;
+}
+
+.wood {
+  background-image: url('imgs/tree.png');
+}
+
+.clay {
+  background-image: url('imgs/clay.png');
+}
+
+.reed {
+  background-image: url('imgs/reed.png');
+  background-size: 25%;
+}
+
+.food {
+  background-image: url('imgs/food.png');
+}
+
+.sheep {
+  background-image: url('imgs/sheep.png');
+}
+
+.boar {
+  background-image: url('imgs/pig.png');
+}
+
+.cow {
+  background-image: url('imgs/cow.ico');
+}
+
+.stone {
+  background-image: url('imgs/stone.png');
+}
+
+/*
+SPACE MENU BUTTONS
+*/
+
+.prev-value,
+.delete-button {
+  position: absolute;
+  background: rgba(53, 255, 7, 0.8);
+  padding: 3px 6px;
+  top: 6px;
+  left: 6px;
+  margin-left: 0;
+  transition: all 0.3s;
+  box-shadow: 0 1px 2px rgba(68, 68, 68, 0.6);
+}
+
+.prev-value:active,
+.delete-button:active {
+  box-shadow: 0 0px 1px rgba(68, 68, 68, 0.6);
+}
+
+.delete-button {
+  background: rgba(249, 0, 0, 0.8);
+  font-weight: bold;
+  left: calc(100% - 27px);
+  right: 6px;
+  border: none;
+}
+
+/*
+MAIN BUTTONS
+*/
 
 .accumulate-button,
 .add-space-button {
@@ -190,12 +299,9 @@ nav {
   background: #2a0845;
 }
 
-.gather-button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  display: none;
-}
+/*
+ROUND INFO
+*/
 
 .round-info-container {
   position: absolute;
@@ -224,30 +330,9 @@ nav {
   -webkit-text-fill-color: transparent;*/
 }
 
-.prev-value,
-.delete-button {
-  position: absolute;
-  background: rgba(53, 255, 7, 0.8);
-  padding: 3px 6px;
-  top: 6px;
-  left: 6px;
-  margin-left: 0;
-  transition: all 0.3s;
-  box-shadow: 0 1px 2px rgba(68, 68, 68, 0.6);
-}
-
-.prev-value:active,
-.delete-button:active {
-  box-shadow: 0 0px 1px rgba(68, 68, 68, 0.6);
-}
-
-.delete-button {
-  background: rgba(249, 0, 0, 0.8);
-  font-weight: bold;
-  left: calc(100% - 27px);
-  right: 6px;
-  border: none;
-}
+/*
+STATE CLASSES
+*/
 
 .active {
   background: #6441a5;
@@ -261,69 +346,9 @@ nav {
   visibility: hidden;
 }
 
-.name {
-  margin: 0 0 10px;
-  font-size: 1.7em;
-  font-weight: bold;
-  margin: 0;
-  text-align: center;
-}
-
-.number {
-  margin: 5px 0;
-  font-size: 2.2em;
-  font-weight: bold;
-}
-
-.type {
-  margin: 0;
-}
-
-.wood,
-.clay,
-.reed,
-.food,
-.sheep,
-.stone,
-.boar,
-.cow {
-  background-size: 30%;
-  background-position: 5% 85%;
-  background-repeat: no-repeat;
-}
-
-.wood {
-  background-image: url('imgs/tree.png');
-}
-
-.clay {
-  background-image: url('imgs/clay.png');
-}
-
-.reed {
-  background-image: url('imgs/reed.png');
-  background-size: 25%;
-}
-
-.food {
-  background-image: url('imgs/food.png');
-}
-
-.sheep {
-  background-image: url('imgs/sheep.png');
-}
-
-.boar {
-  background-image: url('imgs/pig.png');
-}
-
-.cow {
-  background-image: url('imgs/cow.ico');
-}
-
-.stone {
-  background-image: url('imgs/stone.png');
-}
+/*
+ANIMATIONS
+*/
 
 @keyframes fade-in-from-bottom {
   0% {
@@ -366,6 +391,10 @@ nav {
     transform: scale(1, 1);
   }
 }
+
+/*
+MEDIA QUERIES
+*/
 
 @media (max-width: 1090px) {
   .add-space-dropdown {
