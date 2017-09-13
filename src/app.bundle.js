@@ -64,10 +64,7 @@ class Model {
       message: ''
     };
     this.id = 0;
-  }
 
-  init() {
-    // make all default spaces active on load
     this.defaultSpaces.forEach(space => {
       let newAccuSpace = new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount);
       this.roundInfo.activeSpaces.push(newAccuSpace);
@@ -122,7 +119,7 @@ class Model {
   }
 
   addRandomOrderSpace(type) {
-    // explore other ways to do this
+    // explore other ways to do this as well
     let space;
     if (type === 'sheep') {
       space = this.randomOrderSpaces[0];
@@ -173,7 +170,6 @@ class Template {
   <h1 class="name">${space.name}</h1>
   <h1 class="number">${space.accumulatedAmount}</h1>
   <h3 class="type">${space.type}</h3>
-  <button class="gather-button">gather</button>
 </div>`
       if (space.id > 7) return `
 <div id="${space.id}" class="space ${space.type}">
@@ -182,7 +178,6 @@ class Template {
   <h1 class="name">${space.name}</h1>
   <h1 class="number">${space.accumulatedAmount}</h1>
   <h3 class="type">${space.type}</h3>
-  <button class="gather-button">gather</button>
 </div>`
       if (space.menuOpen) return `
 <div id="${space.id}" class="space ${space.type}">
@@ -190,7 +185,6 @@ class Template {
   <h1 class="name">${space.name}</h1>
   <h1 class="number">${space.accumulatedAmount}</h1>
   <h3 class="type">${space.type}</h3>
-  <button class="gather-button">gather</button>
 </div>`
       return `
 <div id="${space.id}" class="space ${space.type}">
@@ -198,7 +192,6 @@ class Template {
   <h1 class="name">${space.name}</h1>
   <h1 class="number">${space.accumulatedAmount}</h1>
   <h3 class="type">${space.type}</h3>
-  <button class="gather-button">gather</button>
 </div>`
     }
     this.roundInfoTemplate = function(info) {
@@ -343,10 +336,7 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-  }
 
-  init() {
-    this.model.init();
     this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     this.view.renderInfo(this.model.getRoundInfo());
   }
@@ -404,10 +394,6 @@ class App {
     this.template = new Template();
     this.view = new View(this.template);
     this.controller = new Controller(this.model, this.view)
-  }
-
-  init() {
-    this.controller.init();
 
     accumulateButton.addEventListener('click', e => {
       e.preventDefault();
@@ -437,7 +423,3 @@ class App {
 }
 
 const a = new App();
-
-a.init();
-
-

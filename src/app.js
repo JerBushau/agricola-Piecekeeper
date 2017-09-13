@@ -10,10 +10,6 @@ class App {
     this.template = new Template();
     this.view = new View(this.template);
     this.controller = new Controller(this.model, this.view)
-  }
-
-  init() {
-    this.controller.init();
 
     accumulateButton.addEventListener('click', e => {
       e.preventDefault();
@@ -43,7 +39,3 @@ class App {
 }
 
 const a = new App();
-
-a.init();
-
-

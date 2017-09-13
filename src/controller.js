@@ -4,10 +4,7 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-  }
 
-  init() {
-    this.model.init();
     this.view.renderSpaces(this.model.roundInfo.activeSpaces);
     this.view.renderInfo(this.model.getRoundInfo());
   }

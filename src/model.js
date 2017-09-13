@@ -26,10 +26,7 @@ class Model {
       message: ''
     };
     this.id = 0;
-  }
 
-  init() {
-    // make all default spaces active on load
     this.defaultSpaces.forEach(space => {
       let newAccuSpace = new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount);
       this.roundInfo.activeSpaces.push(newAccuSpace);
@@ -84,7 +81,7 @@ class Model {
   }
 
   addRandomOrderSpace(type) {
-    // explore other ways to do this
+    // explore other ways to do this as well
     let space;
     if (type === 'sheep') {
       space = this.randomOrderSpaces[0];
