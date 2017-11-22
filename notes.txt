@@ -1,6 +1,5 @@
 TODO:
 -----
-- Add ability to delete non-default spaces w/ ctrl+shift click
 - *consider mobile friendly commands*
 - fully test for browser compatibility
 - different color (perhaps red) ripple effect when rolling back
@@ -9,7 +8,7 @@ TODO:
 
 What I've learned (so far):
 ---------------
-While creating this site I set out to learn more about OOP in Javascript. I attempted to implement the MVC pattern to better understand the problems that many of the modern MVC frameworks are trying to solve in order to gain some insight into their designs. While it is far from perfect I did learn a lot.
+While creating this site I set out to learn more about OOP in Javascript. I attempted to implement the MVC pattern to better understand the problems that many of the modern MVC frameworks are trying to solve, in order to gain some insight into their designs. While it is far from perfect I did learn a lot.
 http://todomvc.com/ and specifically https://github.com/tastejs/todomvc/tree/gh-pages/examples/vanillajs was very helpful in attempting this.
 Each project I do is a learning experience with Git. I recently discovered how to create Git aliases and have developed a love for one that seems to be quite common:
 - Git lola = git log --graph --decorate --pretty=oneline --abbrev-commit --all
@@ -20,4 +19,4 @@ things to consider for next iteration:
 --------------------------------------
 - Still need to learn a lot more about events in the browser and a better way to bind the buttons.
 - As a separate project re-build this using Vue.js to learn the basics.
-- Possibly create a mobile app to control the board, so that it can be cast on to a large display and controlled from a mobile device.
+- Possibly create a mobile (web)app to control the board, so that it can be hosted on a large display and controlled by mobile devices of many concurrent users.

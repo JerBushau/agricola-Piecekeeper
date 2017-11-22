@@ -114,7 +114,7 @@ function endGameAlert(info, el, time) {
   }, time);
 }
 
-// from s.o. pretty neat allows you to style psuedo and such eles w/ js by adding a style tag
+// from s.o. kinda neat allows you to style psuedo and such eles w/ js by adding a style tag
 var addRule = (function (style) {
     var sheet = document.head.appendChild(style).sheet;
     return function (selector, css) {

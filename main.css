@@ -84,6 +84,7 @@ SPACES & SPACE CONTAINERS
 
 .space {
   display: flex;
+  cursor: pointer;
   position: relative;
   background-color: #efecf6;
   flex-direction: column;
@@ -96,6 +97,11 @@ SPACES & SPACE CONTAINERS
   min-height: 166px;
   transition: all 0.1s;
   /*dont select text on click*/
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
