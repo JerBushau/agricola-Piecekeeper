@@ -8,25 +8,25 @@ class View {
     this.roundInfoTemplate = template.roundInfoTemplate;
   }
 
-  // create way to render specific changes rather than reprinting entire screen each time.
+  // create way to render specific changes rather than reprinting entire screen
   renderSpaces(spaces) {
     this.spaceContainer.innerHTML = '';
     spaces.forEach(space => {
-      this.spaceContainer.insertAdjacentHTML('beforeend', this.spaceTemplate(space));
+      this.spaceContainer.insertAdjacentHTML('beforeend',
+                                             this.spaceTemplate(space));
     });
     this.bindButtons();
   }
 
   renderInfo(info) {
     this.roundInfoContainer.innerHTML = '';
-    this.roundInfoContainer.insertAdjacentHTML('beforeend', this.roundInfoTemplate(info));
+    this.roundInfoContainer.insertAdjacentHTML('beforeend',
+                                               this.roundInfoTemplate(info));
     if (info.message != '') {
       if (info.message === 'Last Harvest!') {
         document.querySelector('.accumulate-button').classList.add('active');
         // altering active class would be more simple than this but it is interesting
-        addRule('.accumulate-button:after', {
-          display: 'none'
-        });
+        addRule('.accumulate-button:after', { display: 'none' });
         return endGameAlert(info, this.roundInfoContainer, 175);
       }
       document.querySelector('.accumulate-button').classList.remove('active');
@@ -39,7 +39,7 @@ class View {
 
   // fix this bind function... use events
   // dispatch event that controller can listen for or something
-  // so don't have to ref a (the app instance) here in view
+  // so don't have to ref a (the app instance) here in view?
   bindButtons() {
     document.querySelectorAll('.delete-button').forEach(button => {
       button.addEventListener('click', e => {
@@ -114,7 +114,7 @@ function endGameAlert(info, el, time) {
   }, time);
 }
 
-// from s.o. kinda neat allows you to style psuedo and such eles w/ js by adding a style tag
+// from s.o. kinda neat allows you to style psuedo eles w/ js by adding a style tag
 var addRule = (function (style) {
     var sheet = document.head.appendChild(style).sheet;
     return function (selector, css) {

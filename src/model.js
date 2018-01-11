@@ -28,7 +28,10 @@ class Model {
     this.id = 0;
 
     this.defaultSpaces.forEach(space => {
-      let newAccuSpace = new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount);
+      let newAccuSpace = new AcummulatorSpace(this.id,
+                                              space.name,
+                                              space.type,
+                                              space.defaultAmount);
       this.roundInfo.activeSpaces.push(newAccuSpace);
       this.id++;
     });
@@ -55,7 +58,7 @@ class Model {
       this.roundInfo.currentStage = 1;
     }
 
-    this.roundInfo.harvestRounds.some(round => {
+    this.roundInfo.harvestRounds.find(round => {
       if (round === Number(this.roundInfo.currentRound)) {
         if (round === 14) {
           return this.roundInfo.message = 'Last Harvest!';
@@ -72,7 +75,7 @@ class Model {
 
   getSpaceById(id) {
     let disiredSpace;
-    this.roundInfo.activeSpaces.some(space => {
+    this.roundInfo.activeSpaces.find(space => {
       if (id === space.id) {
         disiredSpace = space;
       }
@@ -92,7 +95,10 @@ class Model {
     } else if (type === 'stone') {
       space = this.randomOrderSpaces[3];
     }
-    this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id, space.name, space.type, space.defaultAmount));
+    this.roundInfo.activeSpaces.push(new AcummulatorSpace(this.id,
+                                                          space.name,
+                                                          space.type,
+                                                          space.defaultAmount));
     this.id++
   }
 

@@ -2,6 +2,10 @@ Agricola Piecekeeper
 --------------------
 An application created to speed up gameplay of the Agricola board game. It tracks the accumulation spaces so that you or your group doesn't have to spend time putting out pieces each harvest. It also helps ensure there are enough peices for everyone when playing with a full group. It was built to be cast onto a large display so although it is responsive in design and looks nice on mobile, the non-basic commands are not _yet_ supported on mobile devices.
 
+## To Run the App:
++ `clone repo`
++ open `index.html`
+
 ## How it works:
 #### Basic commands
 + Accumulate all spaces:

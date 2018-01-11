@@ -93,7 +93,7 @@ class Model {
       this.roundInfo.currentStage = 1;
     }
 
-    this.roundInfo.harvestRounds.some(round => {
+    this.roundInfo.harvestRounds.find(round => {
       if (round === Number(this.roundInfo.currentRound)) {
         if (round === 14) {
           return this.roundInfo.message = 'Last Harvest!';
@@ -110,7 +110,7 @@ class Model {
 
   getSpaceById(id) {
     let disiredSpace;
-    this.roundInfo.activeSpaces.some(space => {
+    this.roundInfo.activeSpaces.find(space => {
       if (id === space.id) {
         disiredSpace = space;
       }
